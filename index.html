@@ -33,17 +33,17 @@ a{color:inherit;text-decoration:none}
 .skip:hover{background:var(--ink);color:#fff}
 
 /* 패널 */
-.panel{position:absolute;inset:0;display:flex;align-items:center;overflow:hidden;transform:translateX(-100%);opacity:0;visibility:hidden;will-change:transform,opacity}
-.panel.active{transform:none;opacity:1;visibility:visible;transition:transform 1.05s var(--ease),opacity .6s ease;z-index:2}
-.panel.leave{transform:translateX(100%);opacity:0;visibility:visible;transition:transform 1.05s var(--ease),opacity .7s ease .3s;z-index:1}
+.panel{position:absolute;inset:0;display:flex;align-items:center;overflow:hidden;transform:translateX(-7%);opacity:0;visibility:hidden;will-change:transform,opacity}
+.panel.active{transform:none;opacity:1;visibility:visible;transition:transform 1.8s cubic-bezier(.22,.61,.36,1),opacity 1.4s ease;z-index:2}
+.panel.leave{transform:translateX(7%);opacity:0;visibility:visible;transition:transform 1.8s cubic-bezier(.22,.61,.36,1),opacity 1.2s ease;z-index:1}
 .photo{position:absolute;inset:0;background-size:cover;background-position:center;opacity:0;transform:scale(1.08)}
 .panel.active .photo.has{opacity:.22;transform:scale(1);transition:opacity 1.4s ease .3s,transform 9s linear}
 .blob{position:absolute;border-radius:50%;filter:blur(70px);opacity:.55;animation:float 40s ease-in-out infinite alternate}
 @keyframes float{to{transform:translate(5%,7%) scale(1.08)}}
 .inner{position:relative;z-index:3;width:100%;max-width:1320px;margin:0 auto;padding:0 clamp(22px,6vw,80px);display:grid;grid-template-columns:1.05fr .95fr;gap:clamp(24px,4vw,64px);align-items:center}
 
-.a{opacity:0;transform:translateX(-56px);filter:blur(6px)}
-.panel.active .a{animation:slideIn 1s var(--ease2) forwards;animation-delay:var(--d,0s)}
+.a{opacity:0;transform:translateX(-28px);filter:blur(4px)}
+.panel.active .a{animation:slideIn 1.5s cubic-bezier(.22,.61,.36,1) forwards;animation-delay:calc(var(--d,0s) + .15s)}
 @keyframes slideIn{to{opacity:1;transform:none;filter:blur(0)}}
 
 .eyebrow{display:inline-flex;align-items:center;gap:10px;font-family:'Montserrat';font-weight:600;letter-spacing:.3em;font-size:clamp(10px,1vw,12px);text-transform:uppercase;color:var(--coral)}
@@ -129,12 +129,10 @@ h1{font-weight:900;line-height:1.08;letter-spacing:-.03em;font-size:clamp(40px,6
 .btn svg{width:18px;height:18px}
 
 /* 와이프 */
-.wipe{position:absolute;inset:-10% -30%;z-index:40;pointer-events:none;display:flex;transform:translateX(-120%)}
-.wipe i{flex:1;background:var(--ink);transform:skewX(-14deg)}
-.wipe i:nth-child(2){background:var(--coral)}
-.wipe i:nth-child(3){background:var(--gold)}
-.wipe.go{animation:wipe 1.15s var(--ease) forwards}
-@keyframes wipe{to{transform:translateX(120%)}}
+.wipe{position:absolute;inset:0 -60%;z-index:40;pointer-events:none;background:linear-gradient(90deg,rgba(255,255,255,0) 0%,rgba(255,255,255,.55) 45%,rgba(255,247,235,.75) 50%,rgba(255,255,255,.55) 55%,rgba(255,255,255,0) 100%);transform:translateX(-100%);opacity:0}
+.wipe i{display:none}
+.wipe.go{animation:wipe 2s cubic-bezier(.4,0,.2,1) forwards}
+@keyframes wipe{0%{transform:translateX(-100%);opacity:0}20%{opacity:1}80%{opacity:1}100%{transform:translateX(100%);opacity:0}}
 
 /* 하단 */
 .bottom{position:absolute;left:0;right:0;bottom:0;z-index:50;padding:0 clamp(18px,4vw,56px) 22px;display:flex;align-items:center;justify-content:space-between;gap:20px}
@@ -170,7 +168,7 @@ h1{font-weight:900;line-height:1.08;letter-spacing:-.03em;font-size:clamp(40px,6
 
 
   <!-- 1 -->
-  <section class="panel" id="p1" data-dur="8000">
+  <section class="panel" id="p1" data-dur="9000">
     <div class="photo"></div><div class="blob b1"></div><div class="blob b2"></div>
     <div class="drift" id="drift"></div>
     <div class="inner">
@@ -306,7 +304,7 @@ h1{font-weight:900;line-height:1.08;letter-spacing:-.03em;font-size:clamp(40px,6
    CONFIG — 여기만 수정하면 됩니다
    ============================================================ */
 const CONFIG = {
-  duration: 6000,              // 패널 1장이 머무는 시간(ms)
+  duration: 7000,              // 패널 1장이 머무는 시간(ms)
   loopLast: false,             // true: 마지막 장 후 처음으로 반복
   autoRedirect: 0,             // 마지막 장 후 자동 홈 이동(ms). 0 = 안 함
   siteUrl: 'https://www.dainedu.net',
@@ -373,13 +371,13 @@ function go(i) {
   if (prev) { prev.classList.remove('active'); prev.classList.add('leave'); }
   const nextP = panels[i];
   nextP.classList.remove('leave');
-  nextP.style.transition = 'none'; nextP.style.transform = 'translateX(-100%)'; void nextP.offsetWidth;
+  nextP.style.transition = 'none'; nextP.style.transform = 'translateX(-7%)'; void nextP.offsetWidth;
   nextP.style.transition = ''; nextP.style.transform = '';
-  setTimeout(() => nextP.classList.add('active'), 180);
+  setTimeout(() => nextP.classList.add('active'), 350);
   cur = i;
   [...dotsEl.children].forEach((d, k) => { d.classList.toggle('done', k < i); d.classList.remove('cur'); if (k === i) { d.querySelector('i').style.animationDuration = (+panels[i].dataset.dur || CONFIG.duration) + 'ms'; void d.offsetWidth; d.classList.add('cur'); } });
   counter.textContent = String(i + 1).padStart(2, '0') + ' / ' + String(panels.length).padStart(2, '0');
-  setTimeout(() => { if (prev) prev.classList.remove('leave'); busy = false; }, 1150);
+  setTimeout(() => { if (prev) prev.classList.remove('leave'); busy = false; }, 2000);
   schedule();
 }
 function schedule() {
