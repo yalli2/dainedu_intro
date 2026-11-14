@@ -34,8 +34,8 @@ a{color:inherit;text-decoration:none}
 
 /* 패널 */
 .panel{position:absolute;inset:0;display:flex;align-items:center;overflow:hidden;transform:translateX(-7%);opacity:0;visibility:hidden;will-change:transform,opacity}
-.panel.active{transform:none;opacity:1;visibility:visible;transition:transform 1.8s cubic-bezier(.22,.61,.36,1),opacity 1.4s ease;z-index:2}
-.panel.leave{transform:translateX(7%);opacity:0;visibility:visible;transition:transform 1.8s cubic-bezier(.22,.61,.36,1),opacity 1.2s ease;z-index:1}
+.panel.active{transform:none;opacity:1;visibility:visible;transition:transform 2.7s cubic-bezier(.22,.61,.36,1),opacity 2.1s ease;z-index:2}
+.panel.leave{transform:translateX(7%);opacity:0;visibility:visible;transition:transform 2.7s cubic-bezier(.22,.61,.36,1),opacity 1.8s ease;z-index:1}
 .photo{position:absolute;inset:0;background-size:cover;background-position:center;opacity:0;transform:scale(1.08)}
 .panel.active .photo.has{opacity:.22;transform:scale(1);transition:opacity 1.4s ease .3s,transform 9s linear}
 .blob{position:absolute;border-radius:50%;filter:blur(70px);opacity:.55}
@@ -43,7 +43,7 @@ a{color:inherit;text-decoration:none}
 .inner{position:relative;z-index:3;width:100%;max-width:1320px;margin:0 auto;padding:0 clamp(22px,6vw,80px);display:grid;grid-template-columns:1.05fr .95fr;gap:clamp(24px,4vw,64px);align-items:center}
 
 .a{opacity:0;transform:translateX(-28px);filter:blur(4px)}
-.panel.active .a{animation:slideIn 1.5s cubic-bezier(.22,.61,.36,1) forwards;animation-delay:calc(var(--d,0s) + .15s)}
+.panel.active .a{animation:slideIn 2.25s cubic-bezier(.22,.61,.36,1) forwards;animation-delay:calc(var(--d,0s) * 1.5 + .2s)}
 @keyframes slideIn{to{opacity:1;transform:none;filter:blur(0)}}
 
 .eyebrow{display:inline-flex;align-items:center;gap:10px;font-family:'Montserrat';font-weight:600;letter-spacing:.3em;font-size:clamp(10px,1vw,12px);text-transform:uppercase;color:var(--coral)}
@@ -131,7 +131,7 @@ h1{font-weight:900;line-height:1.08;letter-spacing:-.03em;font-size:clamp(40px,6
 /* 와이프 */
 .wipe{position:absolute;inset:0 -60%;z-index:40;pointer-events:none;background:linear-gradient(90deg,rgba(255,255,255,0) 0%,rgba(255,255,255,.55) 45%,rgba(255,247,235,.75) 50%,rgba(255,255,255,.55) 55%,rgba(255,255,255,0) 100%);transform:translateX(-100%);opacity:0}
 .wipe i{display:none}
-.wipe.go{animation:wipe 2s cubic-bezier(.4,0,.2,1) forwards}
+.wipe.go{animation:wipe 3s cubic-bezier(.4,0,.2,1) forwards}
 @keyframes wipe{0%{transform:translateX(-100%);opacity:0}20%{opacity:1}80%{opacity:1}100%{transform:translateX(100%);opacity:0}}
 
 /* 하단 */
@@ -168,7 +168,7 @@ h1{font-weight:900;line-height:1.08;letter-spacing:-.03em;font-size:clamp(40px,6
 
 
   <!-- 1 -->
-  <section class="panel" id="p1" data-dur="9000">
+  <section class="panel" id="p1" data-dur="10000">
     <div class="photo"></div><div class="blob b1"></div><div class="blob b2"></div>
     <div class="inner">
       <div>
@@ -303,7 +303,7 @@ h1{font-weight:900;line-height:1.08;letter-spacing:-.03em;font-size:clamp(40px,6
    CONFIG — 여기만 수정하면 됩니다
    ============================================================ */
 const CONFIG = {
-  duration: 7000,              // 패널 1장이 머무는 시간(ms)
+  duration: 8000,              // 패널 1장이 머무는 시간(ms)
   loopLast: false,             // true: 마지막 장 후 처음으로 반복
   autoRedirect: 0,             // 마지막 장 후 자동 홈 이동(ms). 0 = 안 함
   siteUrl: 'https://www.dainedu.net',
@@ -358,11 +358,11 @@ function go(i) {
   nextP.classList.remove('leave');
   nextP.style.transition = 'none'; nextP.style.transform = 'translateX(-7%)'; void nextP.offsetWidth;
   nextP.style.transition = ''; nextP.style.transform = '';
-  setTimeout(() => nextP.classList.add('active'), 350);
+  setTimeout(() => nextP.classList.add('active'), 500);
   cur = i;
   [...dotsEl.children].forEach((d, k) => { d.classList.toggle('done', k < i); d.classList.remove('cur'); if (k === i) { d.querySelector('i').style.animationDuration = (+panels[i].dataset.dur || CONFIG.duration) + 'ms'; void d.offsetWidth; d.classList.add('cur'); } });
   counter.textContent = String(i + 1).padStart(2, '0') + ' / ' + String(panels.length).padStart(2, '0');
-  setTimeout(() => { if (prev) prev.classList.remove('leave'); busy = false; }, 2000);
+  setTimeout(() => { if (prev) prev.classList.remove('leave'); busy = false; }, 3000);
   schedule();
 }
 function schedule() {
